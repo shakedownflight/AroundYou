@@ -3,10 +3,10 @@ import {Gmaps, Marker} from 'react-gmaps';
 
 class Map extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.mapClick = this.mapClick.bind(this);
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.mapClick = this.mapClick.bind(this);
+  // }
 
   onMapCreated(map) {
     map.setOptions({
@@ -16,7 +16,7 @@ class Map extends React.Component {
 
   mapClick(event, map){
     // console.log("map clicked", event, map);
-    this.props.onClick(event, map);
+    this.props.onClick(event, event.map);
   };
 
   render() {

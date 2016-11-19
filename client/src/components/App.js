@@ -15,14 +15,14 @@ class App extends React.Component{
       mapList : window.mapMarker,
       mapNow : window.mapMarker[0]
     };
-    this.mapClick = this.mapClick.bind(this);
+    this.mapClick = this.mapClick.bind(this); // 맵 클릭을 Map.js에서 사용하려면 바인드 선언 필요
   };
 
   mapClick(event, map){
-    // console.log("app clicked", event, map);
-    // console.log(event.map);
-    this.setState({mapNow: event.map});
-  }
+    // console.log("event", event);
+    // console.log("map", map);
+    this.setState({mapNow: map});
+  };
 
   render(){
     return (

@@ -11,10 +11,10 @@ shakedownflight의 repository에 오신 것을 환영합니다.
 ## Development Stack
 
 * Back-end
- * node-express
+* node-express
 
 * Front-end
- * ReactJS
+* ReactJS
 
 ## Collaboration Tools
 

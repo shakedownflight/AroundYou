@@ -21495,12 +21495,21 @@
 	    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
 	    _this.state = {
-	      mapList: window.mapMarker
+	      mapList: window.mapMarker,
+	      mapNow: window.mapMarker[0]
 	    };
+	    _this.mapClick = _this.mapClick.bind(_this); // 맵 클릭을 Map.js에서 사용하려면 바인드 선언 필요
 	    return _this;
 	  }
 
 	  _createClass(App, [{
+	    key: 'mapClick',
+	    value: function mapClick(event, map) {
+	      // console.log("event", event);
+	      // console.log("map", map);
+	      this.setState({ mapNow: map });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
@@ -21528,7 +21537,7 @@
 	            _react2.default.createElement(
 	              'div',
 	              { id: 'inner' },
-	              _react2.default.createElement(_Map2.default, { marker: this.state.mapList })
+	              _react2.default.createElement(_Map2.default, { marker: this.state.mapList, onClick: this.mapClick })
 	            )
 	          )
 	        ),
@@ -21544,7 +21553,7 @@
 	              _react2.default.createElement(
 	                'div',
 	                { id: 'inner' },
-	                _react2.default.createElement(_VideoInformation2.default, { markerInfo: this.state.mapList[0] })
+	                _react2.default.createElement(_VideoInformation2.default, { markerInfo: this.state.mapNow })
 	              )
 	            )
 	          ),
@@ -21557,7 +21566,7 @@
 	              _react2.default.createElement(
 	                'div',
 	                { id: 'inner' },
-	                _react2.default.createElement(_VideoPlayer2.default, { markerInfo: this.state.mapList[0] })
+	                _react2.default.createElement(_VideoPlayer2.default, { markerInfo: this.state.mapNow })
 	              )
 	            )
 	          )
@@ -21618,25 +21627,13 @@
 	var Header = function (_React$Component) {
 	  _inherits(Header, _React$Component);
 
-	  function Header(props) {
+	  function Header() {
 	    _classCallCheck(this, Header);
 
-	    var _this = _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).call(this, props));
-
-	    _this.state = {
-	      headerSmallTitle: "CodeStates click here"
-	    };
-	    return _this;
+	    return _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).apply(this, arguments));
 	  }
 
 	  _createClass(Header, [{
-	    key: "updateHeaderSmallTitle",
-	    value: function updateHeaderSmallTitle(text) {
-	      this.setState({
-	        headerSmallTitle: "CodeStates GreenField Project"
-	      });
-	    }
-	  }, {
 	    key: "render",
 	    value: function render() {
 	      return _react2.default.createElement(
@@ -21649,8 +21646,8 @@
 	        ),
 	        _react2.default.createElement(
 	          "i",
-	          { onClick: this.updateHeaderSmallTitle.bind(this) },
-	          this.state.headerSmallTitle
+	          null,
+	          "CodeStates GreenField Project"
 	        )
 	      );
 	    }
@@ -21712,15 +21709,23 @@
 
 	  _createClass(Map, [{
 	    key: 'onMapCreated',
+
+
+	    // constructor(props) {
+	    //   super(props);
+	    //   this.mapClick = this.mapClick.bind(this);
+	    // }
+
 	    value: function onMapCreated(map) {
 	      map.setOptions({
 	        disableDefaultUI: true
 	      });
 	    }
 	  }, {
-	    key: 'onClick',
-	    value: function onClick(e) {
-	      console.log('onClick', e);
+	    key: 'mapClick',
+	    value: function mapClick(event, map) {
+	      // console.log("map clicked", event, map);
+	      this.props.onClick(event, event.map);
 	    }
 	  }, {
 	    key: 'render',
@@ -21739,7 +21744,7 @@
 	          params: { v: '3.exp', key: 'AIzaSyApEhbvTjERHndLY1yOdaAES-Fr8-yPrCg' },
 	          onMapCreated: this.onMapCreated },
 	        this.props.marker.map(function (map, i) {
-	          return _react2.default.createElement(_reactGmaps.Marker, { lat: map.lat, lng: map.lng, key: i, onClick: _this2.onClick });
+	          return _react2.default.createElement(_reactGmaps.Marker, { lat: map.lat, lng: map.lng, key: i, onClick: _this2.mapClick.bind(_this2, { map: map }) });
 	        }),
 	        ';'
 	      );
@@ -22539,7 +22544,7 @@
 
 	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/shinminho/Education/Bootcamp.CodeState/CodeStatesImmersive/Group.Project/GreenFieldProject/aroundyou_v1.0/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/shinminho/Education/Bootcamp.CodeState/CodeStatesImmersive/Group.Project/GreenFieldProject/aroundyou_v1.0/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -22569,12 +22574,12 @@
 	  }
 
 	  _createClass(VideoPlayer, [{
-	    key: 'render',
+	    key: "render",
 	    value: function render() {
 	      return _react2.default.createElement(
-	        'div',
+	        "div",
 	        null,
-	        this.props.markerInfo.src
+	        _react2.default.createElement("iframe", { width: "432", height: "243", className: "embed-responsive-item", src: "https://www.youtube.com/embed/" + this.props.markerInfo.src, allowFullScreen: true })
 	      );
 	    }
 	  }]);
@@ -22999,7 +23004,7 @@
 
 	"use strict";
 
-	window.mapMarker = [{ "lat": "37.605216", "lng": "127.317245", "title": "남양주 영화 촬영소", "introduce": "남양주 영화 촬영소를 소개 합니다.", "src": "소스1" }, { "lat": "37.605989", "lng": "127.318930", "title": "제목2", "introduce": "소개2", "src": "소스2" }, { "lat": "37.605956", "lng": "127.314713", "title": "제목3", "introduce": "소개3", "src": "소스3" }, { "lat": "37.604706", "lng": "127.318383", "title": "제목4", "introduce": "소개4", "src": "소스4" }];
+	window.mapMarker = [{ "lat": "37.605216", "lng": "127.317245", "title": "Avengers: Age of Ultron (2015)", "introduce": "Earth's mightiest heroes must come together and learn to fight as a team if they are to stop the mischievous Loki and his alien army from enslaving humanity.", "src": "ZtQMQeIc7fI" }, { "lat": "37.605989", "lng": "127.318930", "title": "Thinking in React, a step by step screencast tutorial", "introduce": "A step by step video tutorial that takes you through the correct way of coding Facebook React views. Check out the rest of the tagtree library", "src": "mFEoarLnnqM" }, { "lat": "37.605956", "lng": "127.314713", "title": "React Tutorial for Beginners", "introduce": "Get the full course here: http://devslopes.com/react In this video you will learn how to setup your project for React development and you will build a simple React ...", "src": "0ByoQm-vnYw" }, { "lat": "37.604706", "lng": "127.318383", "title": "Flux Tutorial - Writing a Simple App in Flux and React", "introduce": "Hey! Write something in the comments, even if it's critical. I'd love to hear feedback! (also, please thumbs-up if you like the vid, and I'll make more). Personally I ...", "src": "o5E894TmHJg" }];
 
 	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/shinminho/Education/Bootcamp.CodeState/CodeStatesImmersive/Group.Project/GreenFieldProject/aroundyou_v1.0/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot not apply hot update to " + "MapData.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
